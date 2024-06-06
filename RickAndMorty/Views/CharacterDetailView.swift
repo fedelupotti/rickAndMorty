@@ -49,6 +49,6 @@ struct CharacterDetailView: View {
     }
 }
 
-//#Preview {
-//    CharacterDetailView()
-//}
+#Preview {
+    CharacterDetailView(character: Character.mock.first!)
+}

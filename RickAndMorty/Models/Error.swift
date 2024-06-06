@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+enum IOError: Error, Equatable {
+    case conection
+    case networkError(String)
+}

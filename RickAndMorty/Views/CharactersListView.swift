@@ -11,84 +11,51 @@ struct CharactersListView: View {
     
     @StateObject var viewModel = ViewModel()
     
-//    @StateObject var networkMonitor = NetworkMonitor()
-    
-    @State var isLoading = true
-    
     var body: some View {
         NavigationStack {
             Group {
                 if viewModel.connectionAvaiable {
                     List {
-                        ForEach(viewModel.characters) { character in
+                        ForEach(viewModel.serachableCharacters) { character in
                             
                             NavigationLink {
                                 CharacterDetailView(character: character)
                             } label: {
-                                HStack(alignment: .top) {
-                                    
-                                    
-                                    if let image = character.image, let imageURL = URL(string: image) {
-                                        AsyncImage(url: imageURL) { imagen in
-                                            
-                                            imagen.resizable()
-                                            
-                                            
-                                        } placeholder: {
-                                            ProgressView()
-                                        }
-                                        .frame(width: 80, height: 80)
-                                        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
-                                        
-                                    } else {
-                                        Image(systemName: "person.slash")
-                                            .resizable()
-                                            .frame(width: 50, height: 50)
-                                    }
-                                    
-                                    VStack(alignment: .leading) {
-                                        Text(character.name ?? "")
-                                            .font(.headline)
-                                        
-                                        Text(character.species ?? "")
-                                            .font(.subheadline)
-                                    }
-                                }
+                               CharacterRowView(character: character)
                             }
                         }
-                        
-                        
                     }
                     .refreshable {
-                        viewModel.updateNetworkStatus()
                         viewModel.onRefresh()
                     }
                     
                 } else {
                     ConnectionFailsView {
+                        //Here we are not actualy refreshing, but we give to the user the idea that he is doing it, for UX purpose
                         viewModel.onRefresh()
                     }
                 }
             }
-//            .overlay(loadingOverlay)
+            .overlay(
+                Group {
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+//                            .foregroundColor(.blue)
+                            .padding()
+                            .background(Color.white.opacity(0))
+//                            .cornerRadius(10)
+//                            .shadow(radius: 10)
+                    }
+                }
+            )
             
             .listStyle(.plain)
             .navigationTitle("Rick & Morty")
             .navigationBarTitleDisplayMode(.automatic)
         }
+        .searchable(text: $viewModel.searchableText)
     }
-    
-//    @ViewBuilder private var loadingOverlay: some View {
-//        if isLoading {
-//            ZStack {
-//                ConnectionFailsView() {
-//                    isLoading = false
-//                }
-//                .opacity(1)
-//                
-//            }
-//        }
-//    }
 }
 
 #Preview {
