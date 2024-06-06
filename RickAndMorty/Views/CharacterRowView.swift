@@ -10,6 +10,7 @@ import SwiftUI
 struct CharacterRowView: View {
     
     var character: Character
+//
     
     var body: some View {
         HStack(alignment: .top) {
