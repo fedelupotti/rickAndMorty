@@ -21,7 +21,6 @@ struct CharacterDetailView: View {
                     .aspectRatio(contentMode: .fit)
                 }
             
-            
             VStack(alignment: .leading) {
                 Text(character.name ?? "")
                     .font(.title.bold())
@@ -40,12 +39,9 @@ struct CharacterDetailView: View {
                     }
                 }
             }
-            
-            
             .navigationTitle("Character")
             .navigationBarTitleDisplayMode(.inline)
         }
-        
     }
 }
 

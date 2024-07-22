@@ -31,7 +31,7 @@ struct CharactersListView: View {
                     
                 } else {
                     ConnectionFailsView {
-                        //Here we are not actualy refreshing, but we give to the user the idea that he is doing it, for UX purpose
+                        //Here we are not actualy refreshing, but we give to the user the idea that he, she is doing it, for UX purpose
                         viewModel.onRefresh()
                     }
                 }
