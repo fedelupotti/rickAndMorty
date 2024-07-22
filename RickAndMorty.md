@@ -6,7 +6,7 @@ The main goal here is to follow SOLID and good development practices.
 
 ## Architecture
 
-<img src="/Users/federicolupotti/Desktop/Captura de pantalla 2024-07-22 a las 10.57.49.png" style="zoom: 33%;" />
+<img src="https://matteomanferdini.com/wp-content/uploads/2023/12/the-structure-of-the-mvvm-pattern-in-swiftui.png" alt="https://matteomanferdini.com/wp-content/uploads/2023/12/the-structure-of-the-mvvm-pattern-in-swiftui.png" style="zoom:20%;" />
 
 ## Run the project
 
