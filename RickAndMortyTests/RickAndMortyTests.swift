@@ -115,7 +115,7 @@ final class RickAndMortyTests: XCTestCase {
         ])
         
         //When
-        let idsEpisodes = sut.getAllIdEpisodesForCharacter(character)
+        let idsEpisodes = sut.testGetAllIdEpisodesForCharacter(character)
         
         //Then
         XCTAssert(idsEpisodes.count == 51)
@@ -168,7 +168,7 @@ final class RickAndMortyTests: XCTestCase {
         ]
         
         //When
-        let episodesSelected = sut.getAllEpisodesForEpisodesId(episodesId: episodesId, episodes: episodes)
+        let episodesSelected = sut.testGetAllEpisodesForEpisodesId(episodesId: episodesId, episodes: episodes)
         
         //Then
         XCTAssertTrue(episodesSelected.count == 2)
@@ -182,8 +182,8 @@ final class RickAndMortyTests: XCTestCase {
         let episodes: [Episode] = []
         
         //When
-        sut.assingLocalEpisodesToCharacters(characters: characters, episodes: episodes)
-        let charactesHaveNotEpisodes = sut.allCharactersWithoutEpisodesObject(characters)
+        sut.testAssingLocalEpisodesToCharacters(characters: characters, episodes: episodes)
+        let charactesHaveNotEpisodes = sut.testAllCharactersWithoutEpisodesObject(characters)
         
         //Then
         
@@ -201,8 +201,8 @@ final class RickAndMortyTests: XCTestCase {
 //        
 //        //When
 //        sut.assingLocalEpisodesToCharacters(characters: characters, episodes: episodes)
-//        let charactesHaveNotEpisodes = sut.allCharactersWithoutEpisodesObject(characters)
-//        
+//        let charactesHaveNotEpisodes = sut.testAllCharactersWithoutEpisodesObject(characters)
+//
 //        //Then
 //        XCTAssertFalse(charactesHaveNotEpisodes)
 //    }

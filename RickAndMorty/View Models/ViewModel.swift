@@ -57,6 +57,10 @@ class ViewModel: ObservableObject {
         fetchAllEpisodes()
     }
     
+    func updateNetworkStatus() {
+        networkMonitor.updateNetworkStatus()
+    }
+    
     //MARK: Private func
     private func setObservers() {
         repository.isLoadingPublisher
@@ -107,11 +111,7 @@ class ViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func updateNetworkStatus() {
-        networkMonitor.updateNetworkStatus()
-    }
-    
-    func assingLocalEpisodesToCharacters(characters: [Character], episodes: [Episode]) {
+    private func assingLocalEpisodesToCharacters(characters: [Character], episodes: [Episode]) {
         var characters = characters
         
         for (index, character) in characters.enumerated() {
@@ -123,7 +123,7 @@ class ViewModel: ObservableObject {
         self.characters = characters
     }
     
-    func allCharactersWithoutEpisodesObject(_ characters: [Character]) -> Bool {
+    private func allCharactersWithoutEpisodesObject(_ characters: [Character]) -> Bool {
         return characters.allSatisfy({ $0.episodesObject == nil })
     }
     
@@ -135,7 +135,7 @@ class ViewModel: ObservableObject {
         repository.fetchAllEpisodes()
     }
     
-    func getAllEpisodesForEpisodesId(episodesId: [Int], episodes: [Episode]) -> [Episode] {
+    private func getAllEpisodesForEpisodesId(episodesId: [Int], episodes: [Episode]) -> [Episode] {
         var characterEpisodes = [Episode]()
         
         for id in episodesId {
@@ -146,7 +146,7 @@ class ViewModel: ObservableObject {
         return characterEpisodes
     }
     
-    func getAllIdEpisodesForCharacter(_ character: Character) -> [Int] {
+    private func getAllIdEpisodesForCharacter(_ character: Character) -> [Int] {
         guard let episodes = character.episode else { return [] }
         var idEpisodes: [Int] = []
         
@@ -157,5 +157,22 @@ class ViewModel: ObservableObject {
         }
         
         return idEpisodes
+    }
+    
+    //    MARK: Public funcs for testing
+    func testGetAllIdEpisodesForCharacter(_ character: Character) -> [Int] {
+            getAllIdEpisodesForCharacter(character)
+    }
+    
+    func testGetAllEpisodesForEpisodesId(episodesId: [Int], episodes: [Episode]) -> [Episode] {
+        getAllEpisodesForEpisodesId(episodesId: episodesId, episodes: episodes)
+    }
+    
+    func testAllCharactersWithoutEpisodesObject(_ characters: [Character])  -> Bool {
+        allCharactersWithoutEpisodesObject(characters)
+    }
+    
+    func testAssingLocalEpisodesToCharacters(characters: [Character], episodes: [Episode]) {
+        assingLocalEpisodesToCharacters(characters: characters, episodes: episodes)
     }
 }
