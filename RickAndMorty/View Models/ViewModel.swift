@@ -26,7 +26,7 @@ class ViewModel: ObservableObject {
     
     var serachableCharacters: [Character] {
         if searchableText.isEmpty { return characters }
-        return characters.filter{( $0.name?.lowercased().contains(searchableText.lowercased()) ?? false )}
+        return characters.filter { $0.name?.lowercased().contains(searchableText.lowercased()) ?? false }
     }
     
     private var episodes = [Episode]()
@@ -56,12 +56,8 @@ class ViewModel: ObservableObject {
         fetchAllCharacters()
         fetchAllEpisodes()
     }
+    //MARK: Setup Observers
     
-    func updateNetworkStatus() {
-        networkMonitor.updateNetworkStatus()
-    }
-    
-    //MARK: Private func
     private func setObservers() {
         repository.isLoadingPublisher
             .dropFirst()
@@ -111,6 +107,19 @@ class ViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    //MARK: Private functions
+    private func fetchAllCharacters() {
+        repository.fetchAllCharacters()
+    }
+    
+    private func fetchAllEpisodes() {
+        repository.fetchAllEpisodes()
+    }
+    
+    private func updateNetworkStatus() {
+        networkMonitor.updateNetworkStatus()
+    }
+    
     private func assingLocalEpisodesToCharacters(characters: [Character], episodes: [Episode]) {
         var characters = characters
         
@@ -125,14 +134,6 @@ class ViewModel: ObservableObject {
     
     private func allCharactersWithoutEpisodesObject(_ characters: [Character]) -> Bool {
         return characters.allSatisfy({ $0.episodesObject == nil })
-    }
-    
-    private func fetchAllCharacters() {
-        repository.fetchAllCharacters()
-    }
-    
-    private func fetchAllEpisodes() {
-        repository.fetchAllEpisodes()
     }
     
     private func getAllEpisodesForEpisodesId(episodesId: [Int], episodes: [Episode]) -> [Episode] {

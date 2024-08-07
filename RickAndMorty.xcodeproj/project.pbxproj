@@ -91,10 +91,10 @@
 			children = (
 				DD50DFDE2BDA995700EABA1E /* NetworkMonitor.swift */,
 				DD585C402BD6D04400998D6C /* APIService.swift */,
-				DD1A602D2BD8FC1600374C96 /* Repository.swift */,
-				DD1A603C2BD9521C00374C96 /* RepositoryProtocol.swift */,
 				DD50DFD62BDA647400EABA1E /* APIServiceProtocol.swift */,
 				DD1A60402BD9568F00374C96 /* MockAPIService.swift */,
+				DD1A602D2BD8FC1600374C96 /* Repository.swift */,
+				DD1A603C2BD9521C00374C96 /* RepositoryProtocol.swift */,
 			);
 			path = "Repositories+Helpers";
 			sourceTree = "<group>";

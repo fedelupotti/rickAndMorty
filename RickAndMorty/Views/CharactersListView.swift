@@ -55,6 +55,7 @@ struct CharactersListView: View {
             .navigationBarTitleDisplayMode(.automatic)
         }
         .searchable(text: $viewModel.searchableText)
+        .autocorrectionDisabled()
     }
 }
 
