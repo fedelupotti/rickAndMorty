@@ -17,12 +17,12 @@ final class RickAndMortyTests: XCTestCase {
     private var sutRepository: Repository!
     
     private lazy var cancellables = Set<AnyCancellable>()
-
+    
     override func setUpWithError() throws {
         sut = ViewModel(repository: Repository(apiService: MockAPIService()))
         sutRepository = Repository(apiService: MockAPIService())
     }
-
+    
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         sut = nil
@@ -47,7 +47,6 @@ final class RickAndMortyTests: XCTestCase {
         
         //When
         //Init already done
-
         
         //Then
         XCTAssertTrue(sut.didCallFunction == nil)
@@ -312,7 +311,7 @@ final class RickAndMortyTests: XCTestCase {
             .collect(2)
             .receive(on: DispatchQueue.main)
             .sink { values in
-                isLoadingValuesCollected = values.map{( $0.unsafelyUnwrapped )}
+                isLoadingValuesCollected = values.map{( $0.publisher.output ?? false )}
                 
                 XCTAssertTrue(isLoadingValuesCollected.first == true)
                 XCTAssertTrue(isLoadingValuesCollected.last == false)
@@ -324,3 +323,4 @@ final class RickAndMortyTests: XCTestCase {
         sutRepository.fetchAllEpisodes()
         await fulfillment(of: [expectation], timeout: 2)
     }
+}
