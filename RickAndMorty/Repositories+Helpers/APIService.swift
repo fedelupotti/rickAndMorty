@@ -16,7 +16,13 @@ enum Path: String {
 
 class APIService: APIServiceProtocol {
     
+    private let session: URLSession
+    
     internal lazy var baseURL = Path.baseURL.rawValue
+    
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
     
     func fetchCharacters() async throws -> [Character] {
         let characterURLString = "\(baseURL + Path.character.rawValue)"
@@ -25,7 +31,7 @@ class APIService: APIServiceProtocol {
             throw NSError(domain: "Invalid URL", code: 0)
         }
         do {
-            let (data, _) = try await URLSession.shared.data(from: characterURL)
+            let (data, _) = try await session.data(from: characterURL)
             let decoder = JSONDecoder()
             let characterResponse = try decoder.decode(CharacterResponse.self, from: data)
             
@@ -48,7 +54,7 @@ class APIService: APIServiceProtocol {
             throw NSError()
         }
         
-        let (data, _) = try await URLSession.shared.data(from: episodeURL)
+        let (data, _) = try await session.data(from: episodeURL)
         let decoder = JSONDecoder()
         let episodeResponse = try decoder.decode(EpisodeResponse.self, from: data)
         

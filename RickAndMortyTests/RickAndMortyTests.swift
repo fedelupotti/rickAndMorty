@@ -323,4 +323,29 @@ final class RickAndMortyTests: XCTestCase {
         sutRepository.fetchAllEpisodes()
         await fulfillment(of: [expectation], timeout: 2)
     }
+    
+    func test_Repository_IOErrorConnection_FetchAllCharactersWithConnectionError() async {
+        let expectation = XCTestExpectation(description: "Error de conexión fue manejado")
+        
+        let characterURLString = "\(Path.baseURL.rawValue + Path.character.rawValue)"
+        let url = URL(string: characterURLString)!
+        let connectionError = NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: nil)
+        
+        URLProtocolMock.errorURLs = [url: connectionError]
+        
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [URLProtocolMock.self]
+        let session = URLSession(configuration: config)
+        
+        sutRepository = Repository(apiService: APIService(session: session))
+        sutRepository.fetchAllCharacters()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            XCTAssertEqual(self?.sutRepository.error, IOError.conection)
+            XCTAssertTrue(self?.sutRepository.isLoading == false, "isLoading debe ser false al terminar")
+            expectation.fulfill()
+        }
+
+        await fulfillment(of: [expectation], timeout: 5)
+    }
 }
