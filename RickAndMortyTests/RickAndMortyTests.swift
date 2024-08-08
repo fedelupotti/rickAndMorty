@@ -258,7 +258,7 @@ final class RickAndMortyTests: XCTestCase {
         await fulfillment(of: [expectation], timeout: 1)
     }
     
-    func test_Reposotory_fetchAllCharacters_WithoutError() async {
+    func test_Repository_fetchAllCharacters_WithoutError() async {
         let expectation = XCTestExpectation(description: "Get any error")
         
         sutRepository.$characters
@@ -273,5 +273,55 @@ final class RickAndMortyTests: XCTestCase {
         
         sutRepository.fetchAllCharacters()
         await fulfillment(of: [expectation], timeout: 1)
+    }
+    
+    func test_Repository_isLoadingPublisher_OrderFetchCharacters() async {
+        
+        let expectation = XCTestExpectation(description: "isLoading correct order")
+        
+        var isLoadingValuesCollected: [Bool] = []
+        
+        sutRepository.$isLoading
+            .dropFirst()
+            .prefix(2)
+            .collect(2)
+            .receive(on: DispatchQueue.main)
+            .sink { values in
+                isLoadingValuesCollected = values.map{( $0.unsafelyUnwrapped )}
+                
+                XCTAssertTrue(isLoadingValuesCollected.first == true)
+                XCTAssertTrue(isLoadingValuesCollected.last == false)
+                
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        sutRepository.fetchAllCharacters()
+        await fulfillment(of: [expectation], timeout: 2)
+    }
+    
+    func test_Repository_isLoadingPublisher_OrderFetchEpisodes() async {
+        
+        let expectation = XCTestExpectation(description: "isLoading correct order")
+        
+        var isLoadingValuesCollected: [Bool] = []
+        
+        sutRepository.$isLoading
+            .dropFirst()
+            .prefix(2)
+            .collect(2)
+            .receive(on: DispatchQueue.main)
+            .sink { values in
+                isLoadingValuesCollected = values.map{( $0.unsafelyUnwrapped )}
+                
+                XCTAssertTrue(isLoadingValuesCollected.first == true)
+                XCTAssertTrue(isLoadingValuesCollected.last == false)
+                
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        sutRepository.fetchAllCharacters()
+        await fulfillment(of: [expectation], timeout: 2)
     }
 }

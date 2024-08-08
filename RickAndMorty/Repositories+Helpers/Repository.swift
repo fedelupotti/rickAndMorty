@@ -15,7 +15,7 @@ class Repository: ObservableObject, RepositoryProtocol {
     
     @Published internal var error: IOError?
     
-    @Published internal var isLoading: Bool?
+    @Published internal var isLoading: Bool? = false
     
     var charactersPublisher: AnyPublisher<[Character], Never> { $characters.eraseToAnyPublisher() }
     var episodesPublisher: AnyPublisher<[Episode], Never> { $episodes.eraseToAnyPublisher() }
