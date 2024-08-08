@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Combine
 @testable import RickAndMorty
 
 // Naming structure: test_UnitOfWork_StateUnderTest_ExcpectedBehaviour
@@ -14,6 +15,8 @@ import XCTest
 final class RickAndMortyTests: XCTestCase {
     private var sut: ViewModel!
     private var sutRepository: Repository!
+    
+    private lazy var cancellables = Set<AnyCancellable>()
 
     override func setUpWithError() throws {
         sut = ViewModel(repository: Repository(apiService: MockAPIService()))
@@ -22,6 +25,10 @@ final class RickAndMortyTests: XCTestCase {
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        sut = nil
+        sutRepository = nil
+        
+        try super.tearDownWithError()
     }
     
     func test_ViewModel_characterVariable_isCharacterType() {
@@ -230,5 +237,42 @@ final class RickAndMortyTests: XCTestCase {
         
         //Then
         XCTAssertTrue(!characterOnInit.isEmpty)
+    }
+    
+    func test_Repository_fetchAllCharacters_FirstCharacterId() async {
+        
+        let expectation = XCTestExpectation(description: "Get one character")
+        
+        sutRepository.$characters
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { character in
+                XCTAssertTrue(!character.isEmpty)
+                XCTAssertEqual(character.first?.id, 1)
+                
+                expectation.fulfill()
+            })
+            .store(in: &cancellables)
+        
+        sutRepository.fetchAllCharacters()
+        await fulfillment(of: [expectation], timeout: 1)
+    }
+    
+    func test_Reposotory_fetchAllCharacters_WithoutError() async {
+        let expectation = XCTestExpectation(description: "Get any error")
+        
+        sutRepository.$characters
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] characters in
+                
+                XCTAssertTrue(self?.sutRepository.error == nil)
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        sutRepository.fetchAllCharacters()
+        await fulfillment(of: [expectation], timeout: 2)
+
     }
 }
