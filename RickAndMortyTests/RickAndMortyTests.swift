@@ -272,7 +272,6 @@ final class RickAndMortyTests: XCTestCase {
             .store(in: &cancellables)
         
         sutRepository.fetchAllCharacters()
-        await fulfillment(of: [expectation], timeout: 2)
-
+        await fulfillment(of: [expectation], timeout: 1)
     }
 }
