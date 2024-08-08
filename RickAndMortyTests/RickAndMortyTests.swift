@@ -275,7 +275,7 @@ final class RickAndMortyTests: XCTestCase {
         await fulfillment(of: [expectation], timeout: 1)
     }
     
-    func test_Repository_isLoadingPublisher_OrderFetchCharacters() async {
+    func test_Repository_isLoading_OrderFetchCharacters() async {
         
         let expectation = XCTestExpectation(description: "isLoading correct order")
         
@@ -300,7 +300,7 @@ final class RickAndMortyTests: XCTestCase {
         await fulfillment(of: [expectation], timeout: 2)
     }
     
-    func test_Repository_isLoadingPublisher_OrderFetchEpisodes() async {
+    func test_Repository_isLoading_OrderFetchEpisodes() async {
         
         let expectation = XCTestExpectation(description: "isLoading correct order")
         
@@ -321,7 +321,6 @@ final class RickAndMortyTests: XCTestCase {
             }
             .store(in: &cancellables)
         
-        sutRepository.fetchAllCharacters()
+        sutRepository.fetchAllEpisodes()
         await fulfillment(of: [expectation], timeout: 2)
     }
-}
