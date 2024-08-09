@@ -53,11 +53,20 @@ class APIService: APIServiceProtocol {
         guard let episodeURL = URL(string: episodeURLString) else {
             throw NSError()
         }
-        
-        let (data, _) = try await session.data(from: episodeURL)
-        let decoder = JSONDecoder()
-        let episodeResponse = try decoder.decode(EpisodeResponse.self, from: data)
-        
-        return episodeResponse.results ?? []
+        do {
+            let (data, _) = try await session.data(from: episodeURL)
+            let decoder = JSONDecoder()
+            let episodeResponse = try decoder.decode(EpisodeResponse.self, from: data)
+            
+            return episodeResponse.results ?? []
+        } catch let error as NSError {
+            if error.domain == NSURLErrorDomain && error.code == NSURLErrorNotConnectedToInternet {
+                print(error.localizedDescription)
+                throw IOError.conection
+            } else {
+                throw IOError.networkError("Network error undefined")
+            }
+        }
+       
     }
 }

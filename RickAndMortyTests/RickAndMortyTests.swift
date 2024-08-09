@@ -325,7 +325,7 @@ final class RickAndMortyTests: XCTestCase {
     }
     
     func test_Repository_IOErrorConnection_FetchAllCharactersWithConnectionError() async {
-        let expectation = XCTestExpectation(description: "Error de conexión fue manejado")
+        let expectation = XCTestExpectation(description: "Not connection error handling")
         
         let characterURLString = "\(Path.baseURL.rawValue + Path.character.rawValue)"
         let url = URL(string: characterURLString)!
@@ -342,7 +342,32 @@ final class RickAndMortyTests: XCTestCase {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
             XCTAssertEqual(self?.sutRepository.error, IOError.conection)
-            XCTAssertTrue(self?.sutRepository.isLoading == false, "isLoading debe ser false al terminar")
+            XCTAssertTrue(self?.sutRepository.isLoading == false, "isLoading should be false at ending")
+            expectation.fulfill()
+        }
+
+        await fulfillment(of: [expectation], timeout: 5)
+    }
+    
+    func test_Repository_IOErrorConnection_FetchAllEpisodesWithConnectionError() async {
+        let expectation = XCTestExpectation(description: "Not conection error handling")
+        
+        let characterURLString = "\(Path.baseURL.rawValue + Path.episode.rawValue)"
+        let url = URL(string: characterURLString)!
+        let connectionError = NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: nil)
+        
+        URLProtocolMock.errorURLs = [url: connectionError]
+        
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [URLProtocolMock.self]
+        let session = URLSession(configuration: config)
+        
+        sutRepository = Repository(apiService: APIService(session: session))
+        sutRepository.fetchAllEpisodes()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) { [weak self] in
+            XCTAssertEqual(self?.sutRepository.error, IOError.conection)
+            XCTAssertTrue(self?.sutRepository.isLoading == false, "isLoading should be false at ending")
             expectation.fulfill()
         }
 

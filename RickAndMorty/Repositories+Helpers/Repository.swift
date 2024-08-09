@@ -55,8 +55,9 @@ class Repository: ObservableObject, RepositoryProtocol {
             do {
                 episodes = try await apiService.fetchEpisodes()
                 print(episodes)
-            }
-            catch {
+            } catch IOError.conection {
+                error = IOError.conection
+            } catch {
                 print(error)
             }
             isLoading = false
