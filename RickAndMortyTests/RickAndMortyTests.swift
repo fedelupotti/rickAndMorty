@@ -99,23 +99,6 @@ final class RickAndMortyTests: XCTestCase {
         
         XCTAssertTrue(charactesHaveNotEpisodes)
     }
-//    
-//    func test_ViewModel_charactersWitoutEpisodes_False() {
-//        //Given
-//        let characters = [Character(id: 1, episode: ["https://rickandmortyapi.com/api/episode/1","https://rickandmortyapi.com/api/episode/2"]),
-//                          Character(id: 2, episode: ["https://rickandmortyapi.com/api/episode/1"])
-//        ]
-//        let episodes = [Episode(id: 1, name: "Some episode!"),
-//                        Episode(id: 2)
-//        ]
-//        
-//        //When
-//        sut.assingLocalEpisodesToCharacters(characters: characters, episodes: episodes)
-//        let charactesHaveNotEpisodes = sut.testAllCharactersWithoutEpisodesObject(characters)
-//
-//        //Then
-//        XCTAssertFalse(charactesHaveNotEpisodes)
-//    }
     
     func test_Repository_Characters_isEmptyOnInit() {
         //Given
