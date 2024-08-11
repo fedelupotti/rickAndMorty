@@ -127,20 +127,19 @@ final class RickAndMortyTests: XCTestCase {
         XCTAssertTrue(characterOnInit.isEmpty)
     }
     
-//    func test_Repository_fetchAllCharacters_atLeastOneCharacterAfterFetch() {
-//        let exp = expectation(description: #function)
-//        
-//        //Given
-//        sutRepository.didCallFetchAllCharacters = { exp.fulfill() }
-//        sutRepository.fetchAllCharacters()
-//        waitForExpectations(timeout: 1)
-//        
-//        //When
-//        let characterOnInit = sutRepository.characters
-//        
-//        //Then
-//        XCTAssertTrue(!characterOnInit.isEmpty)
-//    }
+    func test_Repository_fetchAllCharacters_atLeastOneCharacterAfterFetch() async {
+        sutRepository.fetchAllCharacters()
+        
+        let expectation = XCTestExpectation(description: "One Character")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            let characterOnInit = self?.sutRepository.characters ?? []
+            XCTAssertTrue(!characterOnInit.isEmpty)
+            expectation.fulfill()
+        }
+        await fulfillment(of: [expectation])
+        
+    }
     
     func test_Repository_fetchAllCharacters_FirstCharacterId() async {
         
