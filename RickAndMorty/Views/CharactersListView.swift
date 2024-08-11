@@ -41,11 +41,8 @@ struct CharactersListView: View {
                     if viewModel.isLoading {
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle())
-//                            .foregroundColor(.blue)
                             .padding()
                             .background(Color.white.opacity(0))
-//                            .cornerRadius(10)
-//                            .shadow(radius: 10)
                     }
                 }
             )
